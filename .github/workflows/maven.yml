@@ -1,3 +1,5 @@
+name: Java CI with Maven
+
 on:
   push:
     branches: ["main"]
@@ -5,12 +7,12 @@ on:
     branches: ["main"]
 
 jobs:
-  build:
+  build_projeto:
     runs-on: ubuntu-latest
 
     steps:
-      - name: github checkout
-      - uses: actions/checkout@v3
+      - name: Github chckout
+        uses: actions/checkout@v3
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -19,3 +21,19 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: mvn compile
+
+  testar_projeto:
+    needs: build_projeto
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Github chckout
+        uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: maven
+      - name: Build with Maven
+        run: mvn test
